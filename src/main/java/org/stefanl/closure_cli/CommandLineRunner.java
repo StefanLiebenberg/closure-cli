@@ -1,6 +1,9 @@
 package org.stefanl.closure_cli;
 
+import com.esotericsoftware.yamlbeans.YamlConfig;
+import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.esotericsoftware.yamlbeans.YamlWriter;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -15,14 +18,12 @@ import org.stefanl.closure_utilities.closure.ClosureBuildOptions;
 import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.closure.iClosureBuildOptions;
 import org.stefanl.closure_utilities.internal.BuildException;
+import org.stefanl.closure_utilities.utilities.FsTool;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.io.*;
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +72,6 @@ public class CommandLineRunner {
                 }
             }
         }
-        System.err.println("Unknown command:" + strippedCommand);
         return null;
     }
 
@@ -111,87 +111,81 @@ public class CommandLineRunner {
         return getExistingFile(getPossibleConfigFiles(userConfigFile));
     }
 
-    public static Function<String, File> STRING_TO_FILE =
-            new Function<String, File>() {
-                @Nullable
-                @Override
-                public File apply(@Nullable String
-                                          input) {
-                    if (input != null) {
-                        return new File(input);
-                    } else {
-                        return null;
-                    }
-                }
-            };
+    @Nonnull
+    public static ConfigurationOptions loadConfigurationFromFile(
+            @Nonnull final File configurationFile) throws IOException {
+        try (FileReader fileReader = new FileReader(configurationFile)) {
+            final YamlReader yamlReader = new YamlReader(fileReader);
+            final ConfigurationOptions configOptions =
+                    yamlReader.read(ConfigurationOptions.class);
+            yamlReader.close();
+            return configOptions;
+        }
+    }
 
     public static iClosureBuildOptions getBuildOptions(
             @Nullable final File userConfigFile) throws IOException {
 
         ClosureBuildOptions buildOptions = new ClosureBuildOptions();
-
         File configFile = getConfigFile(userConfigFile);
         if (configFile != null) {
-            try (FileReader fileReader = new FileReader(configFile)) {
-                YamlReader yamlReader = new YamlReader(fileReader);
-                ConfigurationOptions configOptions =
-                        yamlReader.read(ConfigurationOptions.class);
-                yamlReader.close();
+            ConfigurationOptions configOptions =
+                    loadConfigurationFromFile(configFile);
 
-                if (configOptions.assetsDirectory != null) {
-                    buildOptions.setAssetsDirectory(new File(configOptions
-                            .assetsDirectory));
-                }
-
-                if (configOptions.cssClassRenameMap != null) {
-                    buildOptions.setCssClassRenameMap(new File(configOptions
-                            .cssClassRenameMap));
-                }
-
-                if (configOptions.javascriptEntryPoints != null) {
-                    buildOptions.setJavascriptEntryPoints(configOptions
-                            .javascriptEntryPoints);
-                }
-
-                if (configOptions.javascriptSourceDirectories != null) {
-                    buildOptions.setJavascriptSourceDirectories(
-                            Lists.transform(
-                                    configOptions.javascriptEntryPoints,
-                                    STRING_TO_FILE));
-                }
-
-                if (configOptions.outputDirectory != null) {
-                    buildOptions.setOutputDirectory(
-                            new File(configOptions.outputDirectory));
-                }
-
-                if (configOptions.soyOutputDirectory != null) {
-                    buildOptions.setSoyOutputDirectory(new File(configOptions
-                            .soyOutputDirectory));
-                }
-
-                if (configOptions.gssSourceDirectories != null) {
-                    buildOptions.setGssSourceDirectories(
-                            Collections2.transform(
-                                    configOptions.gssSourceDirectories,
-                                    STRING_TO_FILE));
-                }
-
-                if (configOptions.soySourceDirectories != null) {
-                    buildOptions.setSoySourceDirectories(
-                            Collections2.transform(
-                                    configOptions.soySourceDirectories,
-                                    STRING_TO_FILE
-                            )
-                    );
-                }
-
-                if (configOptions.gssEntryPoints != null) {
-                    buildOptions.setGssEntryPoints(configOptions
-                            .gssEntryPoints);
-                }
-
+            if (configOptions.assetsDirectory != null) {
+                buildOptions.setAssetsDirectory(new File(configOptions
+                        .assetsDirectory));
             }
+
+            if (configOptions.cssClassRenameMap != null) {
+                buildOptions.setCssClassRenameMap(new File(configOptions
+                        .cssClassRenameMap));
+            }
+
+            if (configOptions.javascriptEntryPoints != null) {
+                buildOptions.setJavascriptEntryPoints(configOptions
+                        .javascriptEntryPoints);
+            }
+
+            if (configOptions.javascriptSourceDirectories != null) {
+                buildOptions.setJavascriptSourceDirectories(
+                        Lists.transform(
+                                configOptions.javascriptEntryPoints,
+                                STRING_TO_FILE));
+            }
+
+            if (configOptions.outputDirectory != null) {
+                buildOptions.setOutputDirectory(
+                        new File(configOptions.outputDirectory));
+            }
+
+            if (configOptions.soyOutputDirectory != null) {
+                buildOptions.setSoyOutputDirectory(new File(configOptions
+                        .soyOutputDirectory));
+            }
+
+            if (configOptions.gssSourceDirectories != null) {
+                buildOptions.setGssSourceDirectories(
+                        Collections2.transform(
+                                configOptions.gssSourceDirectories,
+                                STRING_TO_FILE));
+            }
+
+            if (configOptions.soySourceDirectories != null) {
+                buildOptions.setSoySourceDirectories(
+                        Collections2.transform(
+                                configOptions.soySourceDirectories,
+                                STRING_TO_FILE
+                        )
+                );
+            }
+
+            if (configOptions.gssEntryPoints != null) {
+                buildOptions.setGssEntryPoints(configOptions
+                        .gssEntryPoints);
+            }
+
+
         }
         return buildOptions;
     }
@@ -296,7 +290,9 @@ public class CommandLineRunner {
                 if (f != null) {
                     System.out.println("creating example config file at " + f
                             .getPath());
-                    //            FsTool.write(foundFile, content);
+                    System.out.println("writing...");
+                    System.out.println(content);
+                    FsTool.write(f.getAbsoluteFile(), content);
                     return f;
                 }
             }
@@ -306,14 +302,62 @@ public class CommandLineRunner {
         }
     }
 
+    public static String getSampleConfigFileContent() {
+        try {
+            ConfigurationOptions options =
+                    ConfigurationFactory.create(ConfigurationFactory.Flavour
+                            .BASIC);
+            StringWriter stringWriter = new StringWriter();
+            YamlConfig yamlConfig = new YamlConfig();
+            yamlConfig.writeConfig.setAlwaysWriteClassname(false);
+            yamlConfig.writeConfig.setWriteRootTags(false);
+            YamlWriter yamlWriter = new YamlWriter(stringWriter, yamlConfig);
+            yamlWriter.write(options);
+            yamlWriter.close();
+            return stringWriter.toString();
+        } catch (YamlException yamlException) {
+            throw new RuntimeException(yamlException);
+        }
+    }
+
+    @Nonnull
+    public static <A, B> Function<A, B> getConvertor(
+            @Nonnull final Class<A> aClass,
+            @Nonnull final Class<B> bClass) {
+        try {
+            final Constructor<B> constructor = bClass.getConstructor(aClass);
+            return new Function<A, B>() {
+                @Nullable
+                @Override
+                public B apply(@Nullable A input) {
+                    try {
+                        return constructor.newInstance(input);
+                    } catch (ReflectiveOperationException reflect) {
+                        throw new RuntimeException(reflect);
+                    }
+                }
+            };
+        } catch (ReflectiveOperationException reflect) {
+            throw new RuntimeException(reflect);
+        }
+    }
+
+    private static Function<String, File> STRING_TO_FILE =
+            getConvertor(String.class, File.class);
+
     public static void runInitialize() throws IOException {
         System.out.println("checking for configuration file:");
-        File foundConfigFile = ensureFile(getPossibleConfigFiles(null), "  ",
-                "");
+        File foundConfigFile =
+                ensureFile(getPossibleConfigFiles(null), "  ",
+                        getSampleConfigFileContent());
+
+        ConfigurationOptions configurationOptions =
+                loadConfigurationFromFile(foundConfigFile);
 
 
-        Collection<File> javascriptSourceDirs = new ArrayList<>();
-        javascriptSourceDirs.add(new File("src/javascript"));
+        Collection<File> javascriptSourceDirs =
+                Collections2.transform(configurationOptions
+                        .javascriptSourceDirectories, STRING_TO_FILE);
 
         System.out.println("Checking for javascript source directories...");
         if (javascriptSourceDirs != null && !javascriptSourceDirs.isEmpty()) {
@@ -323,9 +367,10 @@ public class CommandLineRunner {
                     "directories...");
         }
 
-        Collection<File> soySourceDirectories = new ArrayList<File>();
-        soySourceDirectories.add(new File("src/soy"));
-        System.out.println("Checking for soy source directories...");
+        Collection<File> soySourceDirectories =
+                Collections2.transform(configurationOptions
+                        .soySourceDirectories, STRING_TO_FILE);
+
         if (soySourceDirectories != null && !soySourceDirectories.isEmpty()) {
             ensureDirectories(soySourceDirectories, "   ");
         } else {
@@ -333,17 +378,17 @@ public class CommandLineRunner {
                     "directories...");
         }
 
-        Collection<File> gssSourceDirectories = new ArrayList<File>();
-        gssSourceDirectories.add(new File("src/gss"));
-        System.out.println("Checking for gss source directories...");
+        Collection<File> gssSourceDirectories =
+                Collections2.transform(configurationOptions
+                        .gssSourceDirectories,
+                        STRING_TO_FILE);
+
         if (gssSourceDirectories != null && !gssSourceDirectories.isEmpty()) {
             ensureDirectories(gssSourceDirectories, "   ");
         } else {
             System.out.println("WARNING: please specify gss " +
                     "directories...");
         }
-
-
     }
 
 
@@ -359,10 +404,6 @@ public class CommandLineRunner {
                 break;
             case INITIALIZE:
                 runInitialize();
-                break;
-            default:
-                System.err.println("ignoring the command: " + command
-                        .toString().toLowerCase());
                 break;
         }
     }
@@ -439,7 +480,12 @@ public class CommandLineRunner {
     }
 
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
+
+        args = new String[]{
+                "initialize"
+        };
+
         CommandLineOptions options = parseArguments(args);
         loadConfiguration(options.configFile);
         final Command command =
