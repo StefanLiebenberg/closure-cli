@@ -17,6 +17,7 @@ import org.stefanl.closure_utilities.closure.ClosureBuildOptions;
 import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.closure.iClosureBuildOptions;
 import org.stefanl.closure_utilities.internal.BuildException;
+import org.stefanl.closure_utilities.javascript.JsBuildOptions;
 import org.stefanl.closure_utilities.utilities.FsTool;
 
 import javax.annotation.Nonnull;
@@ -119,7 +120,11 @@ public class CommandLineRunner {
             final ConfigurationOptions configOptions =
                     yamlReader.read(ConfigurationOptions.class);
             yamlReader.close();
-            return configOptions;
+            if (configOptions != null) {
+                return configOptions;
+            } else {
+                return ConfigurationFactory.createEmpty();
+            }
         }
     }
 
@@ -132,6 +137,14 @@ public class CommandLineRunner {
             ConfigurationOptions configOptions =
                     loadConfigurationFromFile(configFile);
 
+            if(configOptions.shouldCompile != null) {
+                buildOptions.setShouldCompile(configOptions.shouldCompile);
+            }
+
+            if(configOptions.shouldDebug != null) {
+                buildOptions.setShouldDebug(configOptions.shouldDebug);
+            }
+
             if (configOptions.assetsDirectory != null) {
                 buildOptions.setAssetsDirectory(new File(configOptions
                         .assetsDirectory));
@@ -142,15 +155,17 @@ public class CommandLineRunner {
                         .cssClassRenameMap));
             }
 
-            if (configOptions.javascriptEntryPoints != null) {
-                buildOptions.setJavascriptEntryPoints(configOptions
-                        .javascriptEntryPoints);
+            if (configOptions.javascriptEntryPoints != null &&
+                    !configOptions.javascriptEntryPoints.isEmpty()) {
+                buildOptions.setJavascriptEntryPoints(
+                        configOptions.javascriptEntryPoints);
             }
 
-            if (configOptions.javascriptSourceDirectories != null) {
+            if (configOptions.javascriptSourceDirectories != null &&
+                    !configOptions.javascriptSourceDirectories.isEmpty()) {
                 buildOptions.setJavascriptSourceDirectories(
-                        Lists.transform(
-                                configOptions.javascriptEntryPoints,
+                        Collections2.transform(
+                                configOptions.javascriptSourceDirectories,
                                 STRING_TO_FILE));
             }
 
@@ -190,7 +205,6 @@ public class CommandLineRunner {
         return buildOptions;
     }
 
-
     public static void loadConfiguration(final File configFile)
             throws IOException {
         builder.reset();
@@ -203,6 +217,12 @@ public class CommandLineRunner {
 
     public static void runTemplates() throws BuildException {
         builder.buildSoy();
+    }
+
+    public static void runJavascript() throws BuildException {
+        JsBuildOptions jsOptions = builder.getJsBuildOptions();
+
+        builder.buildJs();
     }
 
     public static void runBuild() throws BuildException {
@@ -397,6 +417,10 @@ public class CommandLineRunner {
         switch (command) {
             case BUILD:
                 runBuild();
+            case JAVASCRIPT:
+
+                runJavascript();
+                break;
             case TEMPLATES:
                 runTemplates();
             case HTML:
@@ -481,11 +505,6 @@ public class CommandLineRunner {
 
 
     public static void main(String[] args) throws Exception {
-
-        args = new String[]{
-                "initialize"
-        };
-
         CommandLineOptions options = parseArguments(args);
         loadConfiguration(options.configFile);
         final Command command =
