@@ -11,7 +11,6 @@ import jline.Terminal;
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.StringsCompleter;
-import org.codehaus.plexus.util.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.stefanl.closure_utilities.closure.ClosureBuildOptions;
@@ -51,6 +50,7 @@ public class CommandLineRunner {
                     Command.BUILD,
                     Command.HTML,
                     Command.STYLESHEETS,
+                    Command.JAVASCRIPT,
                     Command.INITIALIZE);
 
     @Nonnull
@@ -64,8 +64,8 @@ public class CommandLineRunner {
     private static Command selectCommand(
             @Nonnull final Collection<Command> commands,
             @Nullable final String commandName) {
-        final String strippedCommand = StringUtils.strip(commandName);
         if (commandName != null && !commandName.isEmpty()) {
+            final String strippedCommand = commandName.trim();
             for (Command command : commands) {
                 if (isCommand(command, strippedCommand)) {
                     return command;
