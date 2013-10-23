@@ -137,11 +137,11 @@ public class CommandLineRunner {
             ConfigurationOptions configOptions =
                     loadConfigurationFromFile(configFile);
 
-            if(configOptions.shouldCompile != null) {
+            if (configOptions.shouldCompile != null) {
                 buildOptions.setShouldCompile(configOptions.shouldCompile);
             }
 
-            if(configOptions.shouldDebug != null) {
+            if (configOptions.shouldDebug != null) {
                 buildOptions.setShouldDebug(configOptions.shouldDebug);
             }
 
@@ -514,6 +514,6 @@ public class CommandLineRunner {
         } else {
             runInteractiveCommandLine();
         }
-
+        System.exit(0);
     }
 }
