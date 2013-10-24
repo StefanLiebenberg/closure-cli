@@ -22,7 +22,8 @@ public class CommandLineOptions {
     @Option(name = "--shouldDebug", usage = "forces the build to debug")
     public Boolean shouldDebug;
 
-    @Option(name = "--dry", usage = "Does not alter any files. WARNING: Don't trust this.")
+    @Option(name = "--dry", usage = "Does not alter any files. WARNING: Don't" +
+            " trust this.")
     public Boolean isDryBuild = false;
 
     @Option(name = "--output-directory", usage = "specify a alternate build " +
