@@ -32,6 +32,8 @@ public class ConfigurationOptions {
 
     public Set<String> javascriptSourceDirectories;
 
+    public Set<String> javascriptTestsDirectories;
+
     public List<String> javascriptEntryPoints;
 
     public String cssClassRenameMap;
@@ -45,6 +47,8 @@ public class ConfigurationOptions {
     public String htmlContent;
 
     public String defaultBuild;
+
+
 
     @Nullable
     private static File toFile(@Nullable String path) {
@@ -95,6 +99,16 @@ public class ConfigurationOptions {
         }
     }
 
+    @Nullable
+    public ImmutableSet<File> getJavascriptSourceDirectories() {
+        return getFiles(javascriptSourceDirectories);
+    }
+
+    @Nullable
+    public ImmutableSet<File> getJavascriptTestDirectories() {
+        return getFiles(javascriptTestsDirectories);
+    }
+
     @Nonnull
     public ImmutableClosureBuildOptions getBuildOptions() {
         return new ImmutableClosureBuildOptions(
@@ -104,7 +118,7 @@ public class ConfigurationOptions {
                 getFiles(gssSourceDirectories),
                 getFiles(externalStylesheets),
                 getList(gssEntryPoints),
-                getFiles(javascriptSourceDirectories),
+                getJavascriptSourceDirectories(),
                 getFiles(externalScripts),
                 getList(javascriptEntryPoints),
                 toFile(javascriptDependencyOutputFile),

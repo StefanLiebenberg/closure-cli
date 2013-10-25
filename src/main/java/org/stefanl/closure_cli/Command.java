@@ -9,7 +9,8 @@ public enum Command {
     STYLESHEETS,
     TEMPLATES,
     JAVASCRIPT,
-    HTML;
+    HTML,
+    TEST;
 
     @Override
     public String toString() {

@@ -7,6 +7,7 @@ import com.esotericsoftware.yamlbeans.YamlWriter;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import jline.Terminal;
 import jline.console.ConsoleReader;
@@ -19,6 +20,7 @@ import org.stefanl.closure_cli.utils.CommandLineProcess;
 import org.stefanl.closure_cli.utils.CommandLineProcessException;
 import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.internal.BuildException;
+import org.stefanl.closure_utilities.javascript.TestRunner;
 import org.stefanl.closure_utilities.utilities.FS;
 
 import javax.annotation.Nonnull;
@@ -45,7 +47,7 @@ public class CommandLineRunner {
     public void runCommand(
             @Nonnull final Command command,
             @Nonnull final PrintWriter output)
-            throws BuildException, IOException {
+            throws Exception {
         switch (command) {
             case BUILD:
                 runBuild();
@@ -61,6 +63,9 @@ public class CommandLineRunner {
                 break;
             case INITIALIZE:
                 runInitialize();
+                break;
+            case TEST:
+                runTest();
                 break;
             case HELP:
                 output.print("Commands: ");
@@ -93,7 +98,8 @@ public class CommandLineRunner {
     }
 
     public void loadConfig() throws IOException {
-        configurationOptions = loadConfigurationFromFile(getConfigurationFile());
+        configurationOptions = loadConfigurationFromFile(getConfigurationFile
+                ());
         builder.setBuildOptions(configurationOptions.getBuildOptions());
     }
 
@@ -103,10 +109,13 @@ public class CommandLineRunner {
 
     public void run() throws Exception {
         loadConfig();
-        final Command command = commandLineOptions.command;
-        if (command != null) {
+
+        final Command[] commands = commandLineOptions.commands;
+        if (commands != null) {
             final PrintWriter printWriter = getPrintWriter();
-            runCommand(command, printWriter);
+            for (Command command : commands) {
+                runCommand(command, printWriter);
+            }
             printWriter.flush();
             printWriter.close();
         } else {
@@ -219,6 +228,26 @@ public class CommandLineRunner {
     public void runTemplates() throws BuildException, IOException {
         loadConfig();
         builder.buildSoy();
+    }
+
+    public void runTest() throws Exception {
+        ImmutableSet<File> sourceDirectories =
+                configurationOptions.getJavascriptSourceDirectories();
+        ImmutableSet<File> testDirectories =
+                configurationOptions.getJavascriptTestDirectories();
+        if (testDirectories != null && sourceDirectories != null) {
+            System.out.println("Locating Testing...");
+            TestRunner runner;
+            for (File testFile : FS.find(testDirectories, "test.js")) {
+                System.out.println("Testing " + testFile.getPath());
+                runner = new TestRunner(testFile, sourceDirectories);
+                runner.run();
+            }
+        } else {
+            System.out.println("No Tests Found");
+            System.out.println(sourceDirectories);
+            System.out.println(testDirectories);
+        }
     }
 
     public void runJavascript() throws BuildException, IOException {
@@ -395,15 +424,22 @@ public class CommandLineRunner {
                 try {
                     CommandLineOptions cmdOptions =
                             parseArguments(line.split(" "), null);
-                    switch (cmdOptions.command) {
-                        case EXIT:
-                            out.println("exiting...");
-                            out.close();
-                            System.exit(0);
-                            break;
-                        default:
-                            target.runCommand(cmdOptions.command, out);
-                            break;
+                    final Command[] commands = cmdOptions.commands;
+                    if (commands != null && commands.length > 0) {
+                        for (Command command : commands) {
+                            switch (command) {
+                                case EXIT:
+                                    out.println("exiting...");
+                                    out.close();
+                                    System.exit(0);
+                                    break;
+                                default:
+                                    target.runCommand(command, out);
+                                    break;
+                            }
+                        }
+                    } else {
+                        System.err.println("err??");
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();

@@ -7,8 +7,8 @@ import java.io.File;
 
 public class CommandLineOptions {
 
-    @Argument(usage = "The build command")
-    public Command command;
+    @Argument(usage = "The build command", multiValued = true)
+    public Command[] commands;
 
     @Option(name = "--help", usage = "prints this message")
     public Boolean showHelp = false;
