@@ -93,8 +93,8 @@ public class CommandLineRunner {
     }
 
     public void loadConfig() throws IOException {
-        configurationOptions = loadConfigurationFromFile(
-                getConfigurationFile());
+        configurationOptions = loadConfigurationFromFile(getConfigurationFile());
+        builder.setBuildOptions(configurationOptions.getBuildOptions());
     }
 
     public PrintWriter getPrintWriter() {
@@ -213,23 +213,16 @@ public class CommandLineRunner {
 
     public void runHtml() throws BuildException, IOException {
         loadConfig();
-        builder.setBuildOptions(configurationOptions.getBuildOptions());
         builder.buildHtml();
-        builder.reset();
     }
 
     public void runTemplates() throws BuildException, IOException {
         loadConfig();
-        builder.setBuildOptions(configurationOptions.getBuildOptions());
         builder.buildSoy();
-        builder.reset();
     }
 
     public void runJavascript() throws BuildException, IOException {
-        loadConfig();
-        builder.setBuildOptions(configurationOptions.getBuildOptions());
         builder.buildJs();
-        builder.reset();
     }
 
 

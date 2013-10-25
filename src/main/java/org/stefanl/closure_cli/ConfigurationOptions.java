@@ -18,11 +18,11 @@ public class ConfigurationOptions {
 
     public String soyOutputDirectory;
 
-    public Boolean shouldCompile;
+    public Boolean shouldCompile = false;
 
-    public Boolean shouldDebug;
+    public Boolean shouldDebug = false;
 
-    public Boolean shouldInline;
+    public Boolean shouldInline = false;
 
     public Set<String> soySourceDirectories;
 
