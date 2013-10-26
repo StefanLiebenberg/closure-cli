@@ -58,6 +58,8 @@ public class CommandLineRunner {
             case TEMPLATES:
                 runTemplates();
                 break;
+            case STYLESHEETS:
+                runStylesheets();
             case HTML:
                 runHtml();
                 break;
@@ -228,6 +230,11 @@ public class CommandLineRunner {
     public void runTemplates() throws BuildException, IOException {
         loadConfig();
         builder.buildSoy();
+    }
+
+    public void runStylesheets() throws BuildException, IOException {
+        loadConfig();
+        builder.buildGss();
     }
 
     public void runTest() throws Exception {
