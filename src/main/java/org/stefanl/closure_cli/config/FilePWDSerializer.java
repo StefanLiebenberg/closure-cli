@@ -24,8 +24,6 @@ public class FilePWDSerializer implements ScalarSerializer<File> {
         @Nullable
         @Override
         public File apply(@Nullable String input) {
-            System.out.println("input: " + input);
-            System.out.println("pwd: " + pwd);
             return Paths.get(pwd.getPath(), input).normalize().toFile()
                     .getAbsoluteFile();
         }
