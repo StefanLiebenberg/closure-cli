@@ -1,14 +1,14 @@
 package org.stefanl.closure_cli.runners;
 
 
-import org.stefanl.closure_cli.BuildCommand;
 import org.stefanl.closure_cli.config.ClosureConfig;
 import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.closure.ClosureOptions;
-import org.stefanl.closure_utilities.internal.BuildException;
 
 import javax.annotation.Nonnull;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BuildRunner
         extends AbstractRunner
@@ -35,47 +35,31 @@ public class BuildRunner
         closureConfig = config;
     }
 
-    public void run(@Nonnull final BuildCommand buildCommand)
-            throws BuildException {
-        log("Building..." + buildCommand.toString());
-        switch (buildCommand) {
-            case ALL:
-                builder.build(closureOptions);
-                break;
-            case STYLESHEETS:
-                builder.buildGssOnly(closureOptions);
-                break;
-            case HTML:
-                builder.buildHtmlOnly(closureOptions);
-                break;
-            case JAVASCRIPT:
-                builder.buildJsOnly(closureOptions);
-                break;
-            case TEMPLATES:
-                builder.buildSoyOnly(closureOptions);
-                break;
-        }
-        log("Done.");
-    }
 
     @Override
     public void run(@Nonnull final String... args) throws Exception {
+
+        List<ClosureBuilder.BuildCommand> buildCommands = new ArrayList<>();
+
         if (args.length != 0) {
             for (String arg : args) {
-                run(BuildCommand.fromText(arg));
+                buildCommands.add(ClosureBuilder.BuildCommand.fromText(arg));
             }
         } else {
-            for (BuildCommand buildCommand : closureConfig.getBuildCommands()) {
-                run(buildCommand);
-            }
+            buildCommands.addAll(closureConfig.getBuildCommands());
         }
+
+        builder.buildCommands(closureOptions,
+                buildCommands.toArray(
+                        new ClosureBuilder.BuildCommand[buildCommands.size()]));
     }
 
     @Override
     public void help() throws Exception {
         log("Usage: build <command>");
         log("       Commands allowed are: ");
-        for (BuildCommand buildCommand : BuildCommand.values()) {
+        for (ClosureBuilder.BuildCommand buildCommand : ClosureBuilder
+                .BuildCommand.values()) {
             log(buildCommand);
         }
 

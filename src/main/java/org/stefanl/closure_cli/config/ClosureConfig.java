@@ -1,6 +1,6 @@
 package org.stefanl.closure_cli.config;
 
-import org.stefanl.closure_cli.BuildCommand;
+import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.closure.ClosureOptions;
 
 import javax.annotation.Nonnull;
@@ -39,14 +39,15 @@ public class ClosureConfig implements ConfigInterface {
 
     public String htmlContent;
 
-    public List<BuildCommand> getBuildCommands() {
-        List<BuildCommand> commands = new ArrayList<>();
+    public List<ClosureBuilder.BuildCommand> getBuildCommands() {
+        List<ClosureBuilder.BuildCommand> commands = new ArrayList<>();
         if (build != null && !build.isEmpty()) {
             for (String command : build.split(" ")) {
-                commands.add(BuildCommand.fromText(command.trim()));
+                commands.add(ClosureBuilder.BuildCommand.fromText(command
+                        .trim()));
             }
         } else {
-            commands.add(BuildCommand.ALL);
+            commands.add(ClosureBuilder.BuildCommand.ALL);
         }
         return commands;
     }
@@ -57,11 +58,11 @@ public class ClosureConfig implements ConfigInterface {
             options.setOutputDirectory(outputDirectory);
         }
 
-        if(shouldCompile != null) {
+        if (shouldCompile != null) {
             options.setShouldCompile(shouldCompile);
         }
 
-        if(shouldDebug != null) {
+        if (shouldDebug != null) {
             options.setShouldDebug(shouldDebug);
         }
 

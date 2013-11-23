@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.stefanl.closure_cli.config.ClosureConfig;
 import org.stefanl.closure_cli.config.ConfigYamlReader;
 import org.stefanl.closure_cli.config.FilePWDSerializer;
+import org.stefanl.closure_utilities.closure.ClosureBuilder;
 import org.stefanl.closure_utilities.closure.ClosureOptions;
 import org.stefanl.closure_utilities.utilities.Immuter;
 
@@ -47,7 +48,7 @@ public class ConfigurationOptionsTest {
                 new FilePWDSerializer.ToFilePWDFunction(exampleDirectory);
 
         Assert.assertEquals(
-                Lists.newArrayList(BuildCommand.JAVASCRIPT),
+                Lists.newArrayList(ClosureBuilder.BuildCommand.JAVASCRIPT),
                 closureConfig.getBuildCommands());
 
         Assert.assertEquals(
@@ -85,7 +86,7 @@ public class ConfigurationOptionsTest {
         Assert.assertNotNull(closureConfig);
         Assert.assertEquals(
                 closureConfig.getBuildCommands(),
-                Lists.newArrayList(BuildCommand.ALL));
+                Lists.newArrayList(ClosureBuilder.BuildCommand.ALL));
 
         final ClosureOptions closureOptions = new ClosureOptions();
         closureConfig.load(closureOptions);
@@ -136,7 +137,7 @@ public class ConfigurationOptionsTest {
 
         Assert.assertEquals(
                 closureConfig.getBuildCommands(),
-                Lists.newArrayList(BuildCommand.ALL));
+                Lists.newArrayList(ClosureBuilder.BuildCommand.ALL));
 
         final ClosureOptions closureOptions = new ClosureOptions();
         closureConfig.load(closureOptions);

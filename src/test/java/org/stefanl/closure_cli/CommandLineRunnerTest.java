@@ -44,6 +44,7 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
+                "--pwd", new File("src/test/resources/library-example/").getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
@@ -60,6 +61,7 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
+                "--pwd", new File("src/test/resources/application-example/").getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
@@ -75,6 +77,7 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
+                "--pwd", new File("src/test/resources/maven-example/").getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath,
                 "--compile");
