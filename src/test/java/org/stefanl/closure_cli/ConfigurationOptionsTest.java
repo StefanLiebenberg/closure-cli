@@ -47,7 +47,7 @@ public class ConfigurationOptionsTest {
                 new FilePWDSerializer.ToFilePWDFunction(exampleDirectory);
 
         Assert.assertEquals(
-                Lists.newArrayList(BuildCommand.JS),
+                Lists.newArrayList(BuildCommand.JAVASCRIPT),
                 closureConfig.getBuildCommands());
 
         Assert.assertEquals(

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 
 public enum BuildCommand {
 
-    ALL, GSS, SOY, JS, HTML;
+    ALL, STYLESHEETS, TEMPLATES, JAVASCRIPT, HTML;
 
     @Override
     public String toString() {

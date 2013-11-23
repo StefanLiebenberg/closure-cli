@@ -42,16 +42,16 @@ public class BuildRunner
             case ALL:
                 builder.build(closureOptions);
                 break;
-            case GSS:
+            case STYLESHEETS:
                 builder.buildGssOnly(closureOptions);
                 break;
             case HTML:
                 builder.buildHtmlOnly(closureOptions);
                 break;
-            case JS:
+            case JAVASCRIPT:
                 builder.buildJsOnly(closureOptions);
                 break;
-            case SOY:
+            case TEMPLATES:
                 builder.buildSoyOnly(closureOptions);
                 break;
         }

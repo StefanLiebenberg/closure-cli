@@ -75,7 +75,7 @@ public class ConfigurationFactory {
                 outputDirectory != null ? outputDirectory : "src");
 //        o.javascriptSourceDirectories = Sets.newHashSet("src");
 //        o.javascriptEntryPoints = Lists.newArrayList("company");
-//        o.build = Sets.newHashSet(BuildCommand.JS);
+//        o.build = Sets.newHashSet(BuildCommand.JAVASCRIPT);
         return o;
     }
 
