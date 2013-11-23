@@ -16,6 +16,7 @@ import org.stefanl.closure_cli.config.ClosureConfig;
 import org.stefanl.closure_cli.config.ConfigYamlReader;
 import org.stefanl.closure_cli.parser.CommandCLIConfigurable;
 import org.stefanl.closure_cli.runners.MainRunner;
+import org.stefanl.closure_utilities.Version;
 import org.stefanl.closure_utilities.closure.ClosureOptions;
 
 import javax.annotation.Nonnull;
@@ -23,6 +24,7 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 public class CommandLineRunner {
 
@@ -230,11 +232,28 @@ public class CommandLineRunner {
                 CommandCLIConfigurable();
         final CmdLineParser cmdLineParser = new CmdLineParser(configurable);
         cmdLineParser.parseArgument(args);
+
+
+        if (configurable.showHelp) {
+            System.out.println("HELP!");
+            return;
+        }
+
+        if (configurable.showVersion) {
+            System.out.println("Closure Cli Version: " + getVersion());
+            System.out.println("Closure Utility Version: " +
+                    Version.getVersion());
+            return;
+        }
+
+
         ClosureConfig closureConfig = getClosureConfig(configurable);
         ClosureOptions closureOptions = getClosureOptions(configurable,
                 closureConfig);
         CommandLineRunner commandLineRunner =
                 new CommandLineRunner(closureOptions, closureConfig);
+
+
         if (configurable.args != null && configurable.args.length != 0) {
             commandLineRunner.run(configurable.args);
         } else {
@@ -246,4 +265,24 @@ public class CommandLineRunner {
         mainInternal(args);
         System.exit(0);
     }
+
+
+    private static String value;
+
+    private static final String PROPERTY = "closure.cli.version";
+
+    private static final String DEFAULT_VALUE = "Unknown";
+
+    public static String getVersion() throws IOException {
+        if (value == null) {
+            final Properties prop = new Properties();
+            final InputStream inputStream = Version.class.
+                    getResourceAsStream("/cli.properties");
+            prop.load(inputStream);
+            inputStream.close();
+            value = prop.getProperty(PROPERTY, DEFAULT_VALUE);
+        }
+        return value;
+    }
+
 }
