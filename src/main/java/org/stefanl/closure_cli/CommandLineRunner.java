@@ -107,10 +107,10 @@ public class CommandLineRunner {
             @Nonnull final CommandCLIConfigurable configurable) {
 
         if (configurable.pwdDirectory != null) {
-            return configurable.pwdDirectory;
+            return configurable.pwdDirectory.getAbsoluteFile();
         }
 
-        return new File("");
+        return new File("").getAbsoluteFile();
     }
 
     private static final List<String> CONFIG_FILES =
