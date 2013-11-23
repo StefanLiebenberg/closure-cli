@@ -138,7 +138,7 @@ public class CommandLineRunner {
             }
         }
 
-        throw new RuntimeException("No config file found.");
+        throw new RuntimeException("No config file found in working directory: " + pwd);
     }
 
     @Nonnull
