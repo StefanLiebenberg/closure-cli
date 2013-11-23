@@ -22,7 +22,7 @@ public class CommandLineRunnerTest {
     private File temporaryBuildDirectory;
 
     private static void main(@Nonnull final String... args) throws Exception {
-        CommandLineRunner.main(args);
+        CommandLineRunner.mainInternal(args);
     }
 
     @Before
