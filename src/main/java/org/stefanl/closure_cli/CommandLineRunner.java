@@ -147,8 +147,8 @@ public class CommandLineRunner {
             throws IOException {
         final File pwd = getWorkingDirectory(configurable);
         final File cfg = getConfigurationFile(configurable);
-        ConfigYamlReader configYamlReader = new ConfigYamlReader(pwd);
-        ClosureConfig closureConfig = configYamlReader.read(cfg);
+        final ConfigYamlReader configYamlReader = new ConfigYamlReader(pwd);
+        final ClosureConfig closureConfig = configYamlReader.read(cfg);
         if (closureConfig == null) {
             throw new RuntimeException("Fatal, failed to create closure " +
                     "config.");
