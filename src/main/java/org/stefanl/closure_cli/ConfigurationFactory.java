@@ -2,9 +2,12 @@ package org.stefanl.closure_cli;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.stefanl.closure_cli.config.ClosureConfig;
+import org.stefanl.closure_cli.config.ClosureConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.File;
 
 public class ConfigurationFactory {
     public enum Flavour {
@@ -12,70 +15,72 @@ public class ConfigurationFactory {
     }
 
     @Nonnull
-    public static ConfigurationOptions createEmpty() {
-        return new ConfigurationOptions();
+    public static ClosureConfig createEmpty() {
+        return new ClosureConfig();
     }
 
-    public static ConfigurationOptions createJsBase(
+    public static ClosureConfig createJsBase(
             @Nonnull final String outputDirectory) {
-        final ConfigurationOptions o = createEmpty();
-        o.outputDirectory = outputDirectory;
-        o.javascriptDependencyOutputFile = outputDirectory + "/deps.js";
+        final ClosureConfig o = createEmpty();
+//        o.outputDirectory = new File(outputDirectory;
+//        o.javascriptDependencyOutputFile = outputDirectory + "/deps.js";
         o.shouldCompile = true;
         o.shouldDebug = false;
         return o;
     }
 
     @Nonnull
-    public static ConfigurationOptions createBase(
+    public static ClosureConfig createBase(
             @Nonnull final String outputDirectory) {
-        final ConfigurationOptions o = createJsBase(outputDirectory);
-        o.cssClassRenameMap = outputDirectory + "/cssRenameMap.js";
-        o.soyOutputDirectory = outputDirectory + "/compiled-templates";
-        o.gssEntryPoints =
-                Lists.newArrayList("company.example");
-        o.javascriptEntryPoints =
-                Lists.newArrayList("company.example");
+        final ClosureConfig o = createJsBase(outputDirectory);
+//        o.cssClassRenameMap = outputDirectory + "/cssRenameMap.js";
+//        o.soyOutputDirectory = outputDirectory + "/compiled-templates";
+//        o.gssEntryPoints =
+//                Lists.newArrayList("company.example");
+//        o.javascriptEntryPoints =
+//                Lists.newArrayList("company.example");
         return o;
     }
 
     @Nonnull
-    public static ConfigurationOptions createBasic(
+    public static ClosureConfig createBasic(
             @Nullable String outputDirectory) {
-        final ConfigurationOptions o = createBase(outputDirectory != null ?
+        final ClosureConfig o = createBase(outputDirectory != null ?
                 outputDirectory : "build");
-        o.assetsDirectory = "src/assets";
-        o.gssSourceDirectories = Sets.newHashSet("src/gss");
-        o.soySourceDirectories = Sets.newHashSet("src/soy");
-        o.javascriptSourceDirectories = Sets.newHashSet("src/javascript");
+//        o.assetsDirectory = "src/assets";
+//        o.gssSourceDirectories = Sets.newHashSet("src/gss");
+//        o.sourceDirectories = Sets.newHashSet("src/soy");
+//        o.javascriptSourceDirectories =
+//                Sets.newHashSet("src/javascript");
         return o;
     }
 
     @Nonnull
-    public static ConfigurationOptions createMaven(
+    public static ClosureConfig createMaven(
             @Nullable final String outputDirectory) {
-        final ConfigurationOptions o = createBase(outputDirectory != null ?
+        final ClosureConfig o = createBase(outputDirectory != null ?
                 outputDirectory : "target/closure");
-        o.assetsDirectory = "src/main/resources/assets";
-        o.gssSourceDirectories = Sets.newHashSet("src/main/resources/gss");
-        o.soySourceDirectories = Sets.newHashSet("src/main/resources/soy");
-        o.javascriptSourceDirectories = Sets.newHashSet("src/main/javascript");
+//        o.assetsDirectory = "src/main/resources/assets";
+//        o.gssSourceDirectories = Sets.newHashSet("src/main/resources/gss");
+//        o.sourceDirectories = Sets.newHashSet("src/main/resources/soy");
+//        o.javascriptSourceDirectories =
+//                Sets.newHashSet("src/main/javascript");
         return o;
     }
 
     @Nonnull
-    public static ConfigurationOptions createLibrary(
+    public static ClosureConfig createLibrary(
             @Nullable final String outputDirectory) {
-        final ConfigurationOptions o = createJsBase(
+        final ClosureConfig o = createJsBase(
                 outputDirectory != null ? outputDirectory : "src");
-        o.javascriptSourceDirectories = Sets.newHashSet("src");
-        o.javascriptEntryPoints = Lists.newArrayList("company");
-        o.defaultBuild = Command.JAVASCRIPT.toString();
+//        o.javascriptSourceDirectories = Sets.newHashSet("src");
+//        o.javascriptEntryPoints = Lists.newArrayList("company");
+//        o.build = Sets.newHashSet(BuildCommand.JS);
         return o;
     }
 
     @Nonnull
-    public static ConfigurationOptions create(
+    public static ClosureConfig create(
             @Nonnull final Flavour flavour,
             @Nullable final String outputDirectory) {
         switch (flavour) {
@@ -89,4 +94,6 @@ public class ConfigurationFactory {
                 return createBase(outputDirectory);
         }
     }
+
+
 }

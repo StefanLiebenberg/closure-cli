@@ -1,0 +1,10 @@
+
+@provide sample-layout;
+
+body, html {
+  margin: 0;
+}
+
+body > * {
+  margin: 10px;
+}

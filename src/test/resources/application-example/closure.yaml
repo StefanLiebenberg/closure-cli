@@ -1,0 +1,18 @@
+build: all
+outputDirectory: build
+javascript:
+  sourceDirectories:
+    - ../closure-library
+    - src/javascript
+  testDirectories:
+    - test/javascript
+  entryPoints:
+    - sample.Application
+stylesheets:
+  sourceDirectories:
+    - src/gss
+  entryPoints:
+    - sample-import
+templates:
+  sourceDirectories:
+  - src/soy

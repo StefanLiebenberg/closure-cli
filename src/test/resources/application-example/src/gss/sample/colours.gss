@@ -1,0 +1,8 @@
+
+@provide sample-colours;
+@require sample-layout;
+
+body {
+  background: white;
+  color: black;
+}

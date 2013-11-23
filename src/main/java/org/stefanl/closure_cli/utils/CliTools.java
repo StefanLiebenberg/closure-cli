@@ -110,13 +110,12 @@ public class CliTools {
             @Nonnull final File directory,
             @Nonnull final String prefix,
             @Nonnull final PrintStream printStream,
-            final int n,
-            final boolean isDry) {
+            final int n) {
         final String path = directory.getPath();
         if (directory.exists()) {
             printEntry(path, "exists", prefix, printStream, n);
         } else {
-            if (isDry || directory.mkdirs()) {
+            if (directory.mkdirs()) {
                 printEntry(path, "created", prefix, printStream, n);
             } else {
                 printEntry(path, "missing", prefix, printStream, n);
@@ -128,13 +127,12 @@ public class CliTools {
     public static void ensureDirectories(
             @Nonnull Collection<File> directories,
             @Nonnull String prefix,
-            @Nonnull PrintStream printStream,
-            boolean isDry) {
+            @Nonnull PrintStream printStream) {
         if (!directories.isEmpty()) {
             final int n = maxEntrySize(directories, FILENAME_SIZE_COUNTER) + 5;
             for (File directory : directories) {
                 if (directory != null) {
-                    ensureDirectory(directory, prefix, printStream, n, isDry);
+                    ensureDirectory(directory, prefix, printStream, n);
                 }
             }
         }

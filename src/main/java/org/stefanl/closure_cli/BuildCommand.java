@@ -1,21 +1,19 @@
 package org.stefanl.closure_cli;
 
+
 import javax.annotation.Nonnull;
 
-public enum Command {
+public enum BuildCommand {
 
-    BUILD,
-    INITIALIZE,
-    HELP,
-    TEST;
+    ALL, GSS, SOY, JS, HTML;
 
     @Override
     public String toString() {
-        return super.name().toLowerCase();
+        return name().toLowerCase();
     }
 
     @Nonnull
-    public static Command fromString(String text) {
+    public static BuildCommand fromText(String text) {
         return valueOf(text.trim().toUpperCase());
     }
 }

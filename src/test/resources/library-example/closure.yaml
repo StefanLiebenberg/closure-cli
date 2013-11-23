@@ -1,0 +1,12 @@
+build: js
+shouldCompile: true
+shouldDebug: false
+outputDirectory: build
+javascript:
+  sourceDirectories:
+    - ../closure-library
+    - src
+  testDirectories:
+    - test
+  entryPoints:
+    - company
