@@ -14,22 +14,29 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
             usage = "The output directory")
     public File outputDirectory;
 
-    @Option(name = "--config")
+    @Option(name = "--config", usage = "Specifies the configuration file")
     public File configFile;
 
     @Option(name = "--pwd", usage = "Specifies the working directory")
     public File pwdDirectory;
 
+    // todo implement this
     @Option(name = "--help", aliases = {"-h"}, usage = "show help")
     public Boolean showHelp = false;
 
+    // todo implement this
     @Option(name = "--version", aliases = {"-v"}, usage = "Show the version.")
     public Boolean showVersion = false;
 
-    @Option(name = "--compile", aliases = {"-C"},
+    // todo add support for --no-compile
+    @Option(name = "--compile",
             usage = "Compile the app")
     public Boolean compile;
 
+    // todo add support for --no-debug
+    @Option(name = "--debug",
+            usage = "Debug the app")
+    public Boolean debug;
 
     public void load(@Nonnull final ClosureOptions closureOptions) {
         if (outputDirectory != null) {
@@ -38,6 +45,10 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
 
         if (compile != null) {
             closureOptions.setShouldCompile(compile);
+        }
+
+        if (debug != null) {
+            closureOptions.setShouldDebug(debug);
         }
     }
 }
