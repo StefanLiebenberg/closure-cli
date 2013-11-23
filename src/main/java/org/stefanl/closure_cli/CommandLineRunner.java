@@ -102,21 +102,59 @@ public class CommandLineRunner {
         }
     }
 
+    @Nonnull
+    public static File getWorkingDirectory(
+            @Nonnull final CommandCLIConfigurable configurable) {
+
+        if (configurable.pwdDirectory != null) {
+            return configurable.pwdDirectory;
+        }
+
+        return new File("");
+    }
+
+    private static final List<String> CONFIG_FILES =
+            Lists.newArrayList("closure.yaml", "config/closure.yaml");
+
+    public static File getConfigurationFile(
+            @Nonnull final CommandCLIConfigurable configurable) {
+
+        if (configurable.configFile != null) {
+
+            if (!configurable.configFile.exists()) {
+                throw new RuntimeException("Configuration file " +
+                        configurable.configFile + " does not exist");
+            }
+
+            return configurable.configFile;
+        }
+
+        File pwd = getWorkingDirectory(configurable);
+
+        for (String configFileName : CONFIG_FILES) {
+            File configFile = new File(pwd, configFileName);
+            if (configFile.exists()) {
+                return configFile;
+            }
+        }
+
+        throw new RuntimeException("No config file found.");
+    }
 
     @Nonnull
     public static ClosureConfig getClosureConfig(
             @Nonnull final CommandCLIConfigurable configurable)
             throws IOException {
-        final File cfgFile = configurable.configFile;
-        if (cfgFile != null) {
-            ConfigYamlReader configYamlReader =
-                    new ConfigYamlReader(cfgFile.getParentFile());
-            ClosureConfig closureConfig = configYamlReader.read(cfgFile);
-            if (closureConfig != null) {
-                return closureConfig;
-            }
+        final File pwd = getWorkingDirectory(configurable);
+        final File cfg = getConfigurationFile(configurable);
+        ConfigYamlReader configYamlReader = new ConfigYamlReader(pwd);
+        ClosureConfig closureConfig = configYamlReader.read(cfg);
+        if (closureConfig == null) {
+            throw new RuntimeException("Fatal, failed to create closure " +
+                    "config.");
         }
-        return new ClosureConfig();
+        return closureConfig;
+
     }
 
     public static ClosureOptions getClosureOptions(

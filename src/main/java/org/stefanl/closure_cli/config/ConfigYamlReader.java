@@ -2,12 +2,8 @@ package org.stefanl.closure_cli.config;
 
 
 import com.esotericsoftware.yamlbeans.YamlConfig;
-import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
-import com.esotericsoftware.yamlbeans.scalar.ScalarSerializer;
-import com.google.common.base.Function;
 import org.stefanl.closure_cli.ConfigurationFactory;
-import org.stefanl.closure_utilities.utilities.FS;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,13 +11,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Paths;
 
 public class ConfigYamlReader {
 
     private final File pwd;
 
-    public ConfigYamlReader(File pwd) {
+    public ConfigYamlReader(@Nonnull final File pwd) {
         this.pwd = pwd;
     }
 
@@ -54,10 +49,14 @@ public class ConfigYamlReader {
     private YamlConfig getYAMLConfig() {
         if (yamlConfig == null) {
             yamlConfig = new YamlConfig();
-            yamlConfig.setPropertyElementType(GssConfig.class, "sourceDirectories", File.class);
-            yamlConfig.setPropertyElementType(SoyConfig.class, "sourceDirectories", File.class);
-            yamlConfig.setPropertyElementType(JavascriptConfig.class, "sourceDirectories", File.class);
-            yamlConfig.setScalarSerializer(File.class, new FilePWDSerializer(pwd));
+            yamlConfig.setPropertyElementType(GssConfig.class,
+                    "sourceDirectories", File.class);
+            yamlConfig.setPropertyElementType(SoyConfig.class,
+                    "sourceDirectories", File.class);
+            yamlConfig.setPropertyElementType(JavascriptConfig.class,
+                    "sourceDirectories", File.class);
+            yamlConfig.setScalarSerializer(File.class,
+                    new FilePWDSerializer(pwd));
         }
         return yamlConfig;
     }

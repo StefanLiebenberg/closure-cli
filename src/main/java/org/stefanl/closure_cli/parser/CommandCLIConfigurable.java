@@ -17,6 +17,9 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
     @Option(name = "--config")
     public File configFile;
 
+    @Option(name = "--pwd", usage = "Specifies the working directory")
+    public File pwdDirectory;
+
     @Option(name = "--help", aliases = {"-h"}, usage = "show help")
     public Boolean showHelp = false;
 
