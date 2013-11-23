@@ -55,6 +55,8 @@ public class ConfigYamlReader {
                     "sourceDirectories", File.class);
             yamlConfig.setPropertyElementType(JavascriptConfig.class,
                     "sourceDirectories", File.class);
+            yamlConfig.setPropertyElementType(JavascriptConfig.class,
+                    "testDirectories", File.class);
             yamlConfig.setScalarSerializer(File.class,
                     new FilePWDSerializer(pwd));
         }

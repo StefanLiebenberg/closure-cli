@@ -55,7 +55,7 @@ public class ConfigurationOptionsTest {
                 Immuter.set(Sets.newHashSet(
                         toFile.apply("../closure-library"),
                         toFile.apply("src"))),
-                closureOptions.getJavascriptSourceDirectories());
+                closureOptions.getJavascriptSourceDirectories(false));
 
         Assert.assertEquals(
                 toFile.apply("build"),

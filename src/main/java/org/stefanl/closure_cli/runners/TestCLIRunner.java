@@ -62,7 +62,7 @@ public class TestCLIRunner
     @Override
     public void run(@Nonnull final String[] args) throws Exception {
         final Collection<File> sourceDirectories =
-                closureOptions.getJavascriptSourceDirectories();
+                closureOptions.getJavascriptSourceDirectories(true);
         if (sourceDirectories != null && !sourceDirectories.isEmpty()) {
             for (File testFile : getTestFiles(args, sourceDirectories)) {
                 log("Running test file: " + testFile);

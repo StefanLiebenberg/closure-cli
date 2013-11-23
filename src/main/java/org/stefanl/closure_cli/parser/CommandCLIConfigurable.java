@@ -38,9 +38,18 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
             usage = "Debug the app")
     public Boolean debug;
 
+    @Option(name = "--javascriptOutputFile")
+    public File scriptFile;
+
     public void load(@Nonnull final ClosureOptions closureOptions) {
+
+
         if (outputDirectory != null) {
             closureOptions.setOutputDirectory(outputDirectory);
+        }
+
+        if(scriptFile != null) {
+            closureOptions.setJavascriptOutputFile(scriptFile);
         }
 
         if (compile != null) {
