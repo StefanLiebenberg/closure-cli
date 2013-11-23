@@ -138,7 +138,8 @@ public class CommandLineRunner {
             }
         }
 
-        throw new RuntimeException("No config file found in working directory: " + pwd);
+        throw new RuntimeException("No config file found in working " +
+                "directory: " + pwd);
     }
 
     @Nonnull
@@ -224,7 +225,7 @@ public class CommandLineRunner {
 
     }
 
-    public static void main(String... args) throws Exception {
+    protected static void mainInternal(String... args) throws Exception {
         final CommandCLIConfigurable configurable = new
                 CommandCLIConfigurable();
         final CmdLineParser cmdLineParser = new CmdLineParser(configurable);
@@ -239,5 +240,10 @@ public class CommandLineRunner {
         } else {
             commandLineRunner.interactive();
         }
+    }
+
+    public static void main(String... args) throws Exception {
+        mainInternal(args);
+        System.exit(0);
     }
 }
