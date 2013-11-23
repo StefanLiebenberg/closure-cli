@@ -66,6 +66,11 @@ public class MainRunner implements RunnerInterface {
     public void run(@Nonnull String[] args) throws Exception {
         String stringCommand = args[0];
         String[] otherArgs = Arrays.copyOfRange(args, 1, args.length);
-        run(Command.fromString(stringCommand), otherArgs);
+        try {
+            run(Command.fromString(stringCommand), otherArgs);
+        } catch (IllegalArgumentException illegalArgument) {
+            printStream.println("Unknown Command: " + stringCommand);
+            run(Command.HELP);
+        }
     }
 }
