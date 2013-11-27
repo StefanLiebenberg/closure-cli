@@ -41,15 +41,30 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
     @Option(name = "--javascriptOutputFile")
     public File scriptFile;
 
-    public void load(@Nonnull final ClosureOptions closureOptions) {
+    @Option(name = "--javascript-definesOutputFile")
+    public File javascriptDefinesOutputFile;
 
+    @Option(name = "--javascript-dependencyOutputFile")
+    public File javascriptDependencyOutputFile;
+
+    public void load(@Nonnull final ClosureOptions closureOptions) {
 
         if (outputDirectory != null) {
             closureOptions.setOutputDirectory(outputDirectory);
         }
 
-        if(scriptFile != null) {
+        if (scriptFile != null) {
             closureOptions.setJavascriptOutputFile(scriptFile);
+        }
+
+        if (javascriptDefinesOutputFile != null) {
+            closureOptions.setJavascriptDefinesOutputFile(
+                    javascriptDefinesOutputFile);
+        }
+
+        if(javascriptDependencyOutputFile != null) {
+            closureOptions.setJavascriptDependencyOutputFile(
+                    javascriptDependencyOutputFile);
         }
 
         if (compile != null) {

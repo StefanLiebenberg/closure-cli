@@ -11,6 +11,7 @@ import java.util.Set;
 public class JavascriptConfig implements ConfigInterface {
 
     public File dependencyFile;
+    public File definesFile;
     public Set<File> sourceDirectories;
     public Set<File> testDirectories;
     public List<String> entryPoints;
@@ -22,6 +23,10 @@ public class JavascriptConfig implements ConfigInterface {
             options.setJavascriptDependencyOutputFile(dependencyFile);
         }
 
+        if (definesFile != null) {
+            options.setJavascriptDefinesOutputFile(definesFile);
+        }
+
         if (sourceDirectories != null) {
             options.setJavascriptSourceDirectories(sourceDirectories);
         }
@@ -30,6 +35,7 @@ public class JavascriptConfig implements ConfigInterface {
             // todo, remove imuter call.
             options.setJavascriptTestDirectories(Immuter.set(testDirectories));
         }
+
 
         if (entryPoints != null) {
             options.setJavascriptEntryPoints(entryPoints);

@@ -1,5 +1,7 @@
 build: all
 outputDirectory: build
+propertyFiles:
+- src/globals/application.properties
 javascript:
   sourceDirectories:
     - ../closure-library
