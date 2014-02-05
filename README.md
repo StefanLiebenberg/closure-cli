@@ -9,4 +9,3 @@ There is a wiki for this project at [https://github.com/StefanLiebenberg/closure
 ### Author
 
 [Stefan Liebenberg](https://github.com/StefanLiebenberg)
-
