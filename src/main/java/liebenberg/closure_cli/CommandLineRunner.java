@@ -156,6 +156,7 @@ public class CommandLineRunner {
             throw new RuntimeException("Fatal, failed to create closure " +
                     "config.");
         }
+        closureConfig.shouldCompile = configurable.compile;
         return closureConfig;
 
     }

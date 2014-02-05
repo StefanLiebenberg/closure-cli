@@ -48,7 +48,7 @@ public class CommandLineRunnerTest {
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
-                "script.js");
+                "script.min.js");
         Assert.assertTrue(outputScriptFile.exists());
         Assert.assertTrue(outputScriptFile.isFile());
     }
@@ -65,17 +65,19 @@ public class CommandLineRunnerTest {
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
-                "script.js");
+                "script.min.js");
         Assert.assertFalse(outputScriptFile.exists());
     }
 
     @Test
     public void testMainMaven() throws Exception {
+
         String configPath =
                 "src/test/resources/maven-example/closure.yaml";
-        String outputPath = temporaryBuildDirectory.getPath();
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
+
+        String outputPath = temporaryBuildDirectory.getPath();
         main("build",
                 "--pwd", new File("src/test/resources/maven-example/").getAbsolutePath(),
                 "--config", configPath,
@@ -83,7 +85,7 @@ public class CommandLineRunnerTest {
                 "--compile");
 
         final File outputScriptFile =
-                new File(temporaryBuildDirectory, "script.js");
+                new File(temporaryBuildDirectory, "script.min.js");
         Assert.assertTrue(outputScriptFile.exists());
         Assert.assertTrue(outputScriptFile.isFile());
 
