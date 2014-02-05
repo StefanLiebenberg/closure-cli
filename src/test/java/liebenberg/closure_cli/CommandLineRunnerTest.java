@@ -44,9 +44,11 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
-                "--pwd", new File("src/test/resources/library-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/library-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
-                "--outputDirectory", outputPath);
+                "--outputDirectory", outputPath,
+                "--compile");
         final File outputScriptFile = new File(temporaryBuildDirectory,
                 "script.min.js");
         Assert.assertTrue(outputScriptFile.exists());
@@ -61,7 +63,8 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
-                "--pwd", new File("src/test/resources/application-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/application-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
@@ -79,7 +82,8 @@ public class CommandLineRunnerTest {
 
         String outputPath = temporaryBuildDirectory.getPath();
         main("build",
-                "--pwd", new File("src/test/resources/maven-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/maven-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath,
                 "--compile");
@@ -106,15 +110,15 @@ public class CommandLineRunnerTest {
         Assert.assertNotNull(headElement);
         Elements scriptElements = headElement.getElementsByTag("script");
         List<String> stringList = new ArrayList<String>();
-        for(Element element : scriptElements) {
+        for (Element element : scriptElements) {
             stringList.add(element.absUrl("src"));
         }
         Assert.assertEquals(
-                Lists.newArrayList(outputScriptFile.getAbsoluteFile().toURI().toString()),
+                Lists.newArrayList(outputScriptFile.getAbsoluteFile().toURI()
+                        .toString()),
                 stringList);
 
         Element bodyElement = document.body();
         Assert.assertNotNull(bodyElement);
-
     }
 }
