@@ -23,7 +23,8 @@ public class ClosureConfig implements ConfigInterface {
 
     public Boolean shouldDebug = false;
 
-    public Boolean shouldInline = false;
+
+//    public Boolean shouldInline = false;
 
     public JavascriptConfig javascript;
     public SoyConfig templates;

@@ -28,6 +28,9 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
     @Option(name = "--version", aliases = {"-v"}, usage = "Show the version.")
     public Boolean showVersion = false;
 
+    @Option(name = "--verbose", usage = "Print verbose messages")
+    public Boolean verbose;
+
     // todo add support for --no-compile
     @Option(name = "--compile",
             usage = "Compile the app")
@@ -48,6 +51,10 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
     public File javascriptDependencyOutputFile;
 
     public void load(@Nonnull final ClosureOptions closureOptions) {
+
+        if (verbose != null) {
+            closureOptions.setVerbose(verbose);
+        }
 
         if (outputDirectory != null) {
             closureOptions.setOutputDirectory(outputDirectory);
