@@ -1,6 +1,7 @@
 package liebenberg.closure_cli;
 
 import com.google.common.collect.Lists;
+import liebenberg.closure_utilities.utilities.FS;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +11,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import liebenberg.closure_utilities.utilities.FS;
 
 import javax.annotation.Nonnull;
 import java.io.File;
