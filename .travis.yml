@@ -1,2 +1,2 @@
 language: java
-before: tree -R .
+before_install: tree -R .
