@@ -11,13 +11,13 @@ import jline.Terminal;
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.StringsCompleter;
-import liebenberg.closure_utilities.build.ClosureOptions;
-import org.kohsuke.args4j.CmdLineParser;
 import liebenberg.closure_cli.config.ClosureConfig;
 import liebenberg.closure_cli.config.ConfigYamlReader;
 import liebenberg.closure_cli.parser.CommandCLIConfigurable;
 import liebenberg.closure_cli.runners.MainRunner;
 import liebenberg.closure_utilities.Version;
+import liebenberg.closure_utilities.build.ClosureOptions;
+import org.kohsuke.args4j.CmdLineParser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -131,7 +131,7 @@ public class CommandLineRunner {
             return configurable.configFile;
         }
 
-        File pwd = getWorkingDirectory(configurable);
+        final File pwd = getWorkingDirectory(configurable);
 
         for (String configFileName : CONFIG_FILES) {
             File configFile = new File(pwd, configFileName);
@@ -229,6 +229,13 @@ public class CommandLineRunner {
     }
 
     protected static void mainInternal(String... args) throws Exception {
+        System.out.print("Command: ");
+        for (String arg : args) {
+            System.out.print(" ");
+            System.out.print(arg);
+        }
+        System.out.println("");
+
         final CommandCLIConfigurable configurable = new
                 CommandCLIConfigurable();
         final CmdLineParser cmdLineParser = new CmdLineParser(configurable);

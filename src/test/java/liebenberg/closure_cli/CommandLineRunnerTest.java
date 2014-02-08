@@ -38,11 +38,12 @@ public class CommandLineRunnerTest {
 
     @Test
     public void testMainLibrary() throws Exception {
+        Assert.assertTrue(temporaryBuildDirectory.isDirectory());
+        Assert.assertTrue(temporaryBuildDirectory.exists());
+
         String configPath =
                 "src/test/resources/library-example/closure.yaml";
         String outputPath = temporaryBuildDirectory.getPath();
-        Assert.assertTrue(temporaryBuildDirectory.isDirectory());
-        Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
                 "--pwd", new File("src/test/resources/library-example/")
                 .getAbsolutePath(),
