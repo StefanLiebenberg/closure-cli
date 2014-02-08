@@ -1,6 +1,6 @@
 package liebenberg.closure_cli.config;
 
-import liebenberg.closure_utilities.closure.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureOptions;
 import liebenberg.closure_utilities.utilities.Immuter;
 
 import javax.annotation.Nonnull;

@@ -4,9 +4,9 @@ package liebenberg.closure_cli.runners;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import liebenberg.closure_utilities.closure.ClosureBuilder;
-import liebenberg.closure_utilities.closure.ClosureOptions;
-import liebenberg.closure_utilities.closure.ClosureResult;
+import liebenberg.closure_utilities.build.ClosureBuilder;
+import liebenberg.closure_utilities.build.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureResult;
 import liebenberg.closure_utilities.javascript.TestRunner;
 import liebenberg.closure_utilities.utilities.FS;
 

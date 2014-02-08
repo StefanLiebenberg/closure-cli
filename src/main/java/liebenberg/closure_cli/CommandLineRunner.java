@@ -11,13 +11,13 @@ import jline.Terminal;
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.StringsCompleter;
+import liebenberg.closure_utilities.build.ClosureOptions;
 import org.kohsuke.args4j.CmdLineParser;
 import liebenberg.closure_cli.config.ClosureConfig;
 import liebenberg.closure_cli.config.ConfigYamlReader;
 import liebenberg.closure_cli.parser.CommandCLIConfigurable;
 import liebenberg.closure_cli.runners.MainRunner;
 import liebenberg.closure_utilities.Version;
-import liebenberg.closure_utilities.closure.ClosureOptions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

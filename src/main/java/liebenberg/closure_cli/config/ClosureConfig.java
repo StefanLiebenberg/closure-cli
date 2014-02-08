@@ -1,7 +1,7 @@
 package liebenberg.closure_cli.config;
 
-import liebenberg.closure_utilities.closure.ClosureBuilder;
-import liebenberg.closure_utilities.closure.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureBuilder;
+import liebenberg.closure_utilities.build.ClosureOptions;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;

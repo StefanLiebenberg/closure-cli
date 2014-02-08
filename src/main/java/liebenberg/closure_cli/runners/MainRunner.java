@@ -3,7 +3,7 @@ package liebenberg.closure_cli.runners;
 
 import liebenberg.closure_cli.Command;
 import liebenberg.closure_cli.config.ClosureConfig;
-import liebenberg.closure_utilities.closure.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureOptions;
 
 import javax.annotation.Nonnull;
 import java.io.PrintStream;

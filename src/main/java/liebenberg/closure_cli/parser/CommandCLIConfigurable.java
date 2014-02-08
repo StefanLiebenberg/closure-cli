@@ -1,8 +1,8 @@
 package liebenberg.closure_cli.parser;
 
 
+import liebenberg.closure_utilities.build.ClosureOptions;
 import org.kohsuke.args4j.Option;
-import liebenberg.closure_utilities.closure.ClosureOptions;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -62,7 +62,7 @@ public class CommandCLIConfigurable extends BaseCLIConfiguratable {
                     javascriptDefinesOutputFile);
         }
 
-        if(javascriptDependencyOutputFile != null) {
+        if (javascriptDependencyOutputFile != null) {
             closureOptions.setJavascriptDependencyOutputFile(
                     javascriptDependencyOutputFile);
         }
