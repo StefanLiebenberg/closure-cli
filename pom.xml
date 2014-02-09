@@ -44,12 +44,6 @@
             <version>1.7.3</version>
             <scope>test</scope>
         </dependency>
-        <!-- not yet required
-        <dependency>
-            <groupId>net.sf.jpf</groupId>
-            <artifactId>jpf</artifactId>
-            <version>1.5</version>
-        </dependency> -->
     </dependencies>
 
     <repositories>
