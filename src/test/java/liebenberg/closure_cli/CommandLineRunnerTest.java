@@ -1,6 +1,7 @@
 package liebenberg.closure_cli;
 
 import com.google.common.collect.Lists;
+import liebenberg.closure_utilities.utilities.FS;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +11,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import liebenberg.closure_utilities.utilities.FS;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -38,17 +38,20 @@ public class CommandLineRunnerTest {
 
     @Test
     public void testMainLibrary() throws Exception {
+        Assert.assertTrue(temporaryBuildDirectory.isDirectory());
+        Assert.assertTrue(temporaryBuildDirectory.exists());
+
         String configPath =
                 "src/test/resources/library-example/closure.yaml";
         String outputPath = temporaryBuildDirectory.getPath();
-        Assert.assertTrue(temporaryBuildDirectory.isDirectory());
-        Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
-                "--pwd", new File("src/test/resources/library-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/library-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
-                "--outputDirectory", outputPath);
+                "--outputDirectory", outputPath,
+                "--compile");
         final File outputScriptFile = new File(temporaryBuildDirectory,
-                "script.js");
+                "script.min.js");
         Assert.assertTrue(outputScriptFile.exists());
         Assert.assertTrue(outputScriptFile.isFile());
     }
@@ -61,29 +64,33 @@ public class CommandLineRunnerTest {
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
         main("build",
-                "--pwd", new File("src/test/resources/application-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/application-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath);
         final File outputScriptFile = new File(temporaryBuildDirectory,
-                "script.js");
+                "script.min.js");
         Assert.assertFalse(outputScriptFile.exists());
     }
 
     @Test
     public void testMainMaven() throws Exception {
+
         String configPath =
                 "src/test/resources/maven-example/closure.yaml";
-        String outputPath = temporaryBuildDirectory.getPath();
         Assert.assertTrue(temporaryBuildDirectory.isDirectory());
         Assert.assertTrue(temporaryBuildDirectory.exists());
+
+        String outputPath = temporaryBuildDirectory.getPath();
         main("build",
-                "--pwd", new File("src/test/resources/maven-example/").getAbsolutePath(),
+                "--pwd", new File("src/test/resources/maven-example/")
+                .getAbsolutePath(),
                 "--config", configPath,
                 "--outputDirectory", outputPath,
                 "--compile");
 
         final File outputScriptFile =
-                new File(temporaryBuildDirectory, "script.js");
+                new File(temporaryBuildDirectory, "script.min.js");
         Assert.assertTrue(outputScriptFile.exists());
         Assert.assertTrue(outputScriptFile.isFile());
 
@@ -104,15 +111,15 @@ public class CommandLineRunnerTest {
         Assert.assertNotNull(headElement);
         Elements scriptElements = headElement.getElementsByTag("script");
         List<String> stringList = new ArrayList<String>();
-        for(Element element : scriptElements) {
+        for (Element element : scriptElements) {
             stringList.add(element.absUrl("src"));
         }
         Assert.assertEquals(
-                Lists.newArrayList(outputScriptFile.getAbsoluteFile().toURI().toString()),
+                Lists.newArrayList(outputScriptFile.getAbsoluteFile().toURI()
+                        .toString()),
                 stringList);
 
         Element bodyElement = document.body();
         Assert.assertNotNull(bodyElement);
-
     }
 }

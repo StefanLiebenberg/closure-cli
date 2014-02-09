@@ -5,16 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>liebenberg</groupId>
     <artifactId>closure-cli</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github</github.global.server>
     </properties>
     <dependencies>
         <dependency>
             <groupId>liebenberg</groupId>
             <artifactId>closure-utilities</artifactId>
-            <version>1.0</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware.yamlbeans</groupId>
@@ -40,7 +41,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.3</version>
             <scope>test</scope>
         </dependency>
         <!-- not yet required

@@ -1,13 +1,15 @@
 package liebenberg.closure_cli.config;
 
-import liebenberg.closure_utilities.closure.ClosureBuilder;
-import liebenberg.closure_utilities.closure.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureBuilder;
+import liebenberg.closure_utilities.build.ClosureOptions;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ClosureConfig implements ConfigInterface {
 
@@ -21,17 +23,14 @@ public class ClosureConfig implements ConfigInterface {
 
     public Boolean shouldDebug = false;
 
-    public Boolean shouldInline = false;
 
-
-    public Set<File> gssSourceDirectories;
-
-    public List<String> gssEntryPoints;
+//    public Boolean shouldInline = false;
 
     public JavascriptConfig javascript;
     public SoyConfig templates;
     public GssConfig stylesheets;
 
+    public List<File> propertyFiles;
 
     public List<String> externalStylesheets;
 
@@ -81,6 +80,20 @@ public class ClosureConfig implements ConfigInterface {
         if (assetsDirectory != null) {
             options.setAssetsDirectory(assetsDirectory);
         }
+
+        if (propertyFiles != null) {
+            List<Configuration> configurations = new ArrayList<>();
+            for (File propertyFile : propertyFiles) {
+                try {
+                    configurations.add(
+                            new PropertiesConfiguration(propertyFile));
+                } catch (ConfigurationException configurationException) {
+                    throw new RuntimeException(configurationException);
+                }
+            }
+            options.setConfigurations(configurations);
+        }
+
     }
 
 

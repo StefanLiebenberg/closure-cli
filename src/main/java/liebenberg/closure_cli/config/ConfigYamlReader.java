@@ -49,6 +49,8 @@ public class ConfigYamlReader {
     private YamlConfig getYAMLConfig() {
         if (yamlConfig == null) {
             yamlConfig = new YamlConfig();
+            yamlConfig.setPropertyElementType(
+                    ClosureConfig.class, "propertyFiles", File.class);
             yamlConfig.setPropertyElementType(GssConfig.class,
                     "sourceDirectories", File.class);
             yamlConfig.setPropertyElementType(SoyConfig.class,

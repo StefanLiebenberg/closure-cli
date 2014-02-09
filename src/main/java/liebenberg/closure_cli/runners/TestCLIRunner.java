@@ -4,9 +4,9 @@ package liebenberg.closure_cli.runners;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import liebenberg.closure_utilities.closure.ClosureBuilder;
-import liebenberg.closure_utilities.closure.ClosureOptions;
-import liebenberg.closure_utilities.closure.ClosureResult;
+import liebenberg.closure_utilities.build.ClosureBuilder;
+import liebenberg.closure_utilities.build.ClosureOptions;
+import liebenberg.closure_utilities.build.ClosureResult;
 import liebenberg.closure_utilities.javascript.TestRunner;
 import liebenberg.closure_utilities.utilities.FS;
 
@@ -77,11 +77,17 @@ public class TestCLIRunner
         }
     }
 
-    public void runTest(@Nonnull final File testFile,
-                        @Nonnull final Collection<File> sourceDirectories)
+    public boolean runTest(@Nonnull final File testFile,
+                           @Nonnull final Collection<File> sourceDirectories)
             throws Exception {
+
         log("Running test file: " + testFile);
-        new TestRunner(testFile, sourceDirectories).run();
+        TestRunner testRunner = new TestRunner(sourceDirectories);
+        testRunner.initialize();
+        testRunner.run(testFile);
+        boolean result = testRunner.isSuccess();
+        testRunner.close();
+        return result;
     }
 
     public void runTests(@Nonnull final String... args) throws Exception {
@@ -97,14 +103,18 @@ public class TestCLIRunner
         if (sourceDirectories != null && !sourceDirectories.isEmpty()) {
             Integer failedCount = 0, count = 0;
             for (File testFile : getTestFiles(args, sourceDirectories)) {
+                count++;
                 try {
-                    count++;
-                    runTest(testFile, sourceDirectories);
-                } catch (TestRunner.TestException testException) {
-                    testException.printStackTrace();
+                    if (!runTest(testFile, sourceDirectories)) {
+                        failedCount++;
+                    }
+                } catch (Exception exception) {
+                    log("Test Failed: " + testFile);
+                    exception.printStackTrace();
                     failedCount++;
                 }
             }
+
             log("Tests: " + count + ", Failed: " + failedCount);
             if (failedCount > 0) {
                 log("Test Failure");
